@@ -1,0 +1,22 @@
+{
+  "name": "antisichtung",
+  "version": "1.0.0",
+  "description": "",
+  "main": "src/index.js",
+  "scripts": {},
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@sparticuz/chromium": "^119.0.0",
+    "playwright": "^1.40.0",
+    "pngjs": "^7.0.0",
+    "prettier": "^3.1.0",
+    "winston": "^3.11.0"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.40.0",
+    "@types/node": "^20.10.0"
+  },
+  "type": "module"
+}

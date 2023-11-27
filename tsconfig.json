@@ -17,5 +17,6 @@
     "allowJs": true,
     "skipLibCheck": true,
     "baseUrl": ".",
+    "noImplicitReturns": true
   }
 }

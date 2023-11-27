@@ -4,9 +4,7 @@ import playwright, {Browser} from "playwright";
 import {LOGGER} from "./logger";
 import {BrowserContext} from "@playwright/test";
 import {Page} from "playwright-core";
-import {Runner} from "./runner";
-import {SubmitContext} from "./context";
-import {PageController} from "./page-controller";
+import {ZpsRunner} from "./zps-runner";
 
 export class Orchestrator {
 
@@ -53,10 +51,14 @@ export class Orchestrator {
 
         let rid = 0;
         // every second, check for available slots, and assign a new runner to them
-        setInterval(() => {
+        setInterval(async () => {
             for (let i = 0; i < this.slots.length; i++) {
                 const slot = this.slots [i];
                 if (!slot.runner) {
+
+                    LOGGER.info("Reloading page...");
+                    await slot.page.reload();
+                    LOGGER.info("Page reloaded!");
                     LOGGER.info(`Creating new runner in slot #${i}`)
                     slot.runner = this.setupRunner(slot, rid++);
                 }
@@ -68,15 +70,13 @@ export class Orchestrator {
         }, 1000)
     }
 
-    private setupRunner(slot: ComputeSlot, runnerId: number): Runner {
-        const context = new SubmitContext(this.config.generateNoiseFiles);
-        const runner = new Runner(runnerId, this.config, context);
-        const controller = new PageController(slot.page)
-        runner.run(controller, slot.page).then(() => {
+    private setupRunner(slot: ComputeSlot, runnerId: number): ZpsRunner {
+        const runner = new ZpsRunner(runnerId, this.config, slot.page);
+        runner.run(slot.page).then(() => {
             LOGGER.info(`Runner #${runner.runId} completed successfully on slot #${slot.slotId}!`)
-            slot.runner = null;
         }).catch((err) => {
             LOGGER.info(`Runner #${runner.runId} failed on slot #${slot.slotId}! Reason: ${err}`)
+        }).finally(async () => {
             slot.runner = null;
         });
         return runner;
@@ -88,7 +88,7 @@ interface ComputeSlot {
     slotId: number;
     page: Page;
     context: BrowserContext;
-    runner: Runner
+    runner: ZpsRunner
 }
 
 /**

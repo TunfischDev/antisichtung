@@ -9,59 +9,29 @@ import {
 import { CITIES } from "./util/cities.js";
 import { generateAndSaveRandomPNG } from "./util/pngutil.js";
 import * as fs from "fs";
-import { LOGGER } from "./logger.js";
+import {LOGGER} from "./logger.js";
 
 export class SubmitContext {
-  /**
-   * @type boolean
-   */
-  useMember;
-
-  /**
-   * @type string
-   */
-  personName;
-
-  /**
-   * @type {string}
-   */
+  useMember: boolean;
+  personName: string;
   cause = "";
 
-  /**
-   * @type {{first: string, last: string}}
-   */
-  _name;
+  _name: {
+    first: string,
+    last: string
+  };
 
   city = sample(CITIES);
 
-  /**
-   * @type {string}
-   */
-  email;
+  email: string
 
-  /**
-   * @type {string}
-   */
-  address;
+  address: string;
 
-  /**
-   * @type {string}
-   */
-  fileName;
+  fileName: string;
 
-  /**
-   * @type {string}
-   */
-  fileDir;
+  fileDir: string;
 
-  /**
-   * @type {boolean}
-   */
-  #generateImages;
-
-  constructor(generateImages = true) {
-    this.#generateImages = generateImages;
-
+  constructor(private readonly generateImages = true) {
     this.useMember = Math.random() > 0;
     this._name = generateRandomName();
     this.personName = `${this._name.first} ${this._name.last}`;
@@ -72,10 +42,10 @@ export class SubmitContext {
     );
     this.address = getRandomAddress();
 
-    if (this.#generateImages) {
+    if (this.generateImages) {
       LOGGER.info("Generating random png file...");
       this.fileDir = "./generated/";
-      this.fileName = (Math.random() * 10000).toFixed(0).toString(36) + ".png";
+      this.fileName = (Math.random() * 100000).toFixed(0) + ".png";
       fs.mkdirSync(this.fileDir, {recursive: true})
       generateAndSaveRandomPNG(
         Math.floor(Math.random() * 1000) + 100,
@@ -94,7 +64,7 @@ export class SubmitContext {
   }
 
   cleanup() {
-    if (this.#generateImages) {
+    if (this.generateImages) {
       fs.rmSync(this.fileDir + this.fileName);
     }
   }

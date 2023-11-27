@@ -4,8 +4,8 @@
  * @param time
  * @returns {Promise<void>}
  */
-export async function timeout(time) {
-  return new Promise((resolve, reject) => {
+export async function timeout(time: number): Promise<void> {
+  return new Promise((resolve) => {
     setTimeout(() => {
       resolve();
     }, time);

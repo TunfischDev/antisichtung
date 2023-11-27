@@ -1,9 +1,11 @@
 import {LOGGER} from "./logger.js";
 import playwright from "playwright";
-import {PageController} from "./page-controller.js";
 import {SubmitContext} from "./context.js";
 import {LineByLineReader} from "./util/linebylinereader.js";
 import {CONFIG} from "./config.js";
+import {Page} from "playwright-core";
+import {Browser} from "playwright";
+import {PageController} from "./page-controller.js";
 
 async function main() {
   LOGGER.info("launching browser...");
@@ -49,7 +51,7 @@ async function main() {
  * @param {string} text
  * @returns {Promise<void>}
  */
-async function singleRun(i, controller, page, text) {
+async function singleRun(i: number, controller: PageController, page: Page, text: string): Promise<void> {
     LOGGER.info(`Iteration ${i}: Starting...`);
     const startTime = Date.now();
 
@@ -69,7 +71,7 @@ async function singleRun(i, controller, page, text) {
         await page.reload();
     }
 }
-async function newBrowser() {
+async function newBrowser(): Promise<Browser> {
   return playwright.chromium.launch({
     headless: CONFIG.headless,
   });
@@ -80,7 +82,7 @@ async function newBrowser() {
  * @param page
  * @returns {Promise<void>}
  */
-async function addPageInterceptors(page) {
+async function addPageInterceptors(page: Page): Promise<void> {
   await page.route("**/*", (route) => {
     const request = route.request();
     const resourceType = request.resourceType();

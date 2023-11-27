@@ -2,13 +2,13 @@
 import {PNG} from "pngjs";
 import * as fs from "fs";
 
-function generateRandomPixel() {
+function generateRandomPixel(): number[] {
     const pixelValue = Math.floor(Math.random() * 256);
     return [pixelValue, pixelValue, pixelValue, 255]; // RGBA-Format (rot, grün, blau, alpha)
 }
 
 // Funktion zum Erstellen und Speichern des PNG
-export function generateAndSaveRandomPNG(width, height, outputPath) {
+export function generateAndSaveRandomPNG(width: number, height: number, outputPath: string): void {
     const png = new PNG({ width, height });
 
     for (let y = 0; y < height; y++) {

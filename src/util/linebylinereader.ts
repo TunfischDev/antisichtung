@@ -1,15 +1,14 @@
 import * as fs from "fs";
-
 export class LineByLineReader {
     // Store lines until they are sent to subscriber
-    cachedLines = []
-    readLineCounter = 0;
-    onNextLineCallback
-    onEndCallback
+    private cachedLines: string[] = [];
+    private readLineCounter = 0;
+    private onNextLineCallback: (line: string, i: number) => void;
+    private onEndCallback: () => void;
 
-    inputStream
+    private inputStream: fs.ReadStream;
 
-    constructor(path) {
+    public constructor(path: string) {
         this.inputStream = fs.createReadStream(path, {
             encoding: 'utf8',
             highWaterMark: 2 ** 18 // 64kb;
@@ -41,7 +40,7 @@ export class LineByLineReader {
      * Once set up, this is immutable.
      * @param callbackConsumer will be executed for each read line.
      */
-    onNextLine(callbackConsumer) {
+    public onNextLine(callbackConsumer: (line: string, lineNumber: number) => void): void {
         if (this.onNextLineCallback) {
             throw new Error('Callback is already set for reader!')
         }
@@ -51,7 +50,7 @@ export class LineByLineReader {
         }
     }
 
-    onEnd(callback) {
+    public onEnd(callback: () => void): void {
         this.onEndCallback = callback;
     }
 
@@ -60,7 +59,7 @@ export class LineByLineReader {
      * @param chunk
      * @private
      */
-    insertChunk(chunk) {
+    private insertChunk(chunk: string) {
         // split chunk at line breaks
         const parts = chunk.split('\n');
         if (this.cachedLines.length > 0) {
@@ -73,7 +72,7 @@ export class LineByLineReader {
         }
     }
 
-    sendToSubscriber() {
+    private sendToSubscriber(): void {
         this.cachedLines.forEach(line => {
             this.onNextLineCallback(line, this.readLineCounter)
             this.readLineCounter++;

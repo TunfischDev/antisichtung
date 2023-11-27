@@ -1,40 +1,35 @@
+import {Page} from "playwright-core";
+import {Locator} from "@playwright/test";
 import {LOGGER} from "./logger.js";
-import {timeout} from "./util/timeout.js";
+import {SubmitContext} from "./context.js";
 
 export class PageController {
 
-    leftSection;
-    /**
-     * @type {Locator}
-     */
-    rightSection;
-    firstForm;
-    memberBtn;
-    supporterBtn;
-    personNameInput;
+    leftSection: Locator;
+    rightSection: Locator;
+    firstForm: Locator;
+    memberBtn: Locator;
+    supporterBtn: Locator;
+    personNameInput: Locator;
 
-    fileInput;
-    loadingComplete;
-    nextStepButton;
-    textArea;
-    infoForm;
-    infoFormMe;
+    fileInput: Locator;
+    loadingComplete: Locator;
+    nextStepButton: Locator;
+    textArea: Locator;
+    infoForm: Locator;
+    infoFormMe: Locator;
 
-    personAddressInput;
-    personGroupInput;
-    personEmailPhoneInput;
-    personOtherInput;
+    personAddressInput: Locator;
+    personGroupInput: Locator;
+    personEmailPhoneInput: Locator;
+    personOtherInput: Locator;
 
-    meNameInput;
-    meEmailInput;
-    mePhoneInput;
+    meNameInput: Locator;
+    meEmailInput: Locator;
+    mePhoneInput: Locator;
 
 
-    /**
-     *
-     * @param {Page} page
-     */
-    constructor(page) {
+    constructor(page: Page) {
 
         this.leftSection = page.locator("section[left]");
 
@@ -66,22 +61,13 @@ export class PageController {
     }
 
 
-    /**
-     * @param {SubmitContext} context
-     * @returns {Promise<void>}
-     */
-    async submitData(context) {
+    async submitData(context: SubmitContext): Promise<void> {
         await this.submitPage1(context);
         await this.submitPage2(context);
         await this.submitPage3(context)
     }
 
-    /**
-     *
-     * @param {SubmitContext} context
-     * @returns {Promise<void>}
-     */
-    async submitPage1(context) {
+    async submitPage1(context: SubmitContext): Promise<void> {
         if (context.useMember) {
             await this.memberBtn.click()
         } else {
@@ -93,12 +79,7 @@ export class PageController {
         await this.nextStepButton.click();
     }
 
-    /**
-     *
-     * @param {SubmitContext} context
-     * @returns {Promise<void>}
-     */
-    async submitPage2(context) {
+    async submitPage2(context: SubmitContext): Promise<void> {
 
         LOGGER.info(`Setting text '${context.cause}'`)
         await this.textArea.fill(context.cause)
@@ -117,11 +98,7 @@ export class PageController {
         await this.nextStepButton.click();
     }
 
-    /**
-     * @param {SubmitContext} context
-     * @returns {Promise<void>}
-     */
-    async submitPage3(context) {
+    async submitPage3(context: SubmitContext) {
 
         await this.personAddressInput.fill(context.address)
         await this.personGroupInput.fill(context.city)

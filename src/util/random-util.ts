@@ -2,7 +2,7 @@ import {FIRST_NAMES, LAST_NAME} from "./names.js";
 import * as fs from "fs";
 import {STREETS} from "./streets.js";
 
-export function generateRandomEmail(vorname, nachname, domain) {
+export function generateRandomEmail(vorname: string, nachname: string, domain: string): string {
   // Zufällige Auswahl, ob das Schema vorname.nachname@domain verwendet wird
   const useFullName = Math.random() < 0.5;
 
@@ -34,10 +34,7 @@ export function generateRandomEmail(vorname, nachname, domain) {
   }
 }
 
-/**
- * @return {string}
- */
-function getDot() {
+function getDot(): string {
   let dot = "";
   const r = Math.random();
   if (r > 0.5) {
@@ -46,23 +43,16 @@ function getDot() {
   return dot;
 }
 
-/**
- * @return {{first: string, last: string}}
- */
-export function generateRandomName() {
-  const firstName = sample(FIRST_NAMES);
-  const lastName = sample(LAST_NAME);
+export function generateRandomName(): {first: string, last: string} {
+  const firstName = sample<string>(FIRST_NAMES);
+  const lastName = sample<string>(LAST_NAME);
   return {
     first: firstName,
     last: lastName,
   };
 }
 
-/**
- * @param {Array<T>} array
- * @return {T}
- */
-export function sample(array) {
+export function sample<T>(array: T[]): T {
   if (array.length === 0) {
     return undefined;
   }
@@ -88,26 +78,17 @@ const emailProviderList = [
   { name: "Mail.ru", domain: "mail.ru" },
 ];
 
-/**
- * @type {string[]}
- */
 const DOMAINS = emailProviderList.map((e) => e.domain);
 
-/**
- * @type {string | undefined}
- */
-export function getRandomDomain() {
+export function getRandomDomain(): string {
   return sample(DOMAINS);
 }
 
-/**
- * @returns {string}
- */
-export function getRandomAddress() {
+export function getRandomAddress(): string {
     return sample(STREETS) + ' ' + (Math.random() * 100).toFixed(0)
 }
 
-export function getRandomFileName(directoryPath) {
+export function getRandomFileName(directoryPath: string): string {
   // Lies alle Dateien im Verzeichnis
   const files = fs.readdirSync(directoryPath);
 

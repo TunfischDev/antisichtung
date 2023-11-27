@@ -1,11 +1,28 @@
-export const CONFIG = {
-    /**
-     * Whether to hide the browser window
-     */
-    headless: true,
+export interface Config {
 
     /**
-     * Whether to generate random noise files, or use the files in the folder /generated
+     * Whether to run the browsers without a gui
      */
-    generateNoiseFiles: true
+    headless: boolean;
+
+    /**
+     * Whether to generate random images or choose from a directory
+     */
+    generateNoiseFiles: boolean;
+
+    /**
+     * Amount of browsers running in parallel
+     */
+    parallelBrowsers: number
+    /**
+     * Whether to generate many realistic looking entries or to dump large files
+     */
+    mode: 'realistic' | 'dump'
+}
+
+export const DEFAULT_CONFIG: Config = {
+    headless: false,
+    generateNoiseFiles: true,
+    parallelBrowsers: 1,
+    mode: 'realistic'
 }

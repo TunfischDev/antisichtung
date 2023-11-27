@@ -1,7 +1,7 @@
 import {Page} from "playwright-core";
 import {Locator} from "@playwright/test";
-import {LOGGER} from "./logger.js";
-import {SubmitContext} from "./context.js";
+import {LOGGER} from "./logger";
+import {SubmitContext} from "./context";
 
 export class PageController {
 
@@ -87,10 +87,8 @@ export class PageController {
         LOGGER.info("Uploading file '" + context.getCompleteFilePath() + "', this may take a while...")
         await this.fileInput.setInputFiles(context.getCompleteFilePath());
 
-        // wait for 2 seconds, then the image should be there
-
         await this.rightSection.locator('svg[class="text-green-700 fill-green-700"]').waitFor({
-            timeout: 60 * 1000 // wait up to one minute until the green haken appears
+            timeout: 60 * 60 * 1000 // wait up to one hour until the green haken appears
         })
 
         await this.rightSection.getByText(context.fileName).waitFor()

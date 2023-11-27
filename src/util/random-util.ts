@@ -1,6 +1,6 @@
-import {FIRST_NAMES, LAST_NAME} from "./names.js";
+import {FIRST_NAMES, LAST_NAME} from "./names";
 import * as fs from "fs";
-import {STREETS} from "./streets.js";
+import {STREETS} from "./streets";
 
 export function generateRandomEmail(vorname: string, nachname: string, domain: string): string {
   // Zufällige Auswahl, ob das Schema vorname.nachname@domain verwendet wird

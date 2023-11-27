@@ -5,11 +5,11 @@ import {
   getRandomDomain,
   getRandomFileName,
   sample,
-} from "./util/random-util.js";
-import { CITIES } from "./util/cities.js";
-import { generateAndSaveRandomPNG } from "./util/pngutil.js";
+} from "./util/random-util";
+import { CITIES } from "./util/cities";
+import { generateAndSaveRandomPNG } from "./util/pngutil";
 import * as fs from "fs";
-import {LOGGER} from "./logger.js";
+import {LOGGER} from "./logger";
 
 export class SubmitContext {
   useMember: boolean;
